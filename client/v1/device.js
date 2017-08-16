@@ -59,7 +59,7 @@ Object.defineProperty(Device.prototype, "api", {
 Object.defineProperty(Device.prototype, "release", {
     get: function() { 
         if(!this._release)
-            this._release = ['4.0.4', '4.3.1', '4.4.4', '5.1.1', '6.0.1'][this.md5int % 5];
+            this._release = ['5.1.1', '6.0.1'][this.md5int % 2];
         return this._release;
     },
     set: function(release) { 
