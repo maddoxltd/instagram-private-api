@@ -38,11 +38,14 @@ Live.create = function(session) {
         });
 };
 
-Live.startBroadcast = function(session, broadcast_id){
+Live.startBroadcast = function(session, broadcast_id, send_notifications = 1){
     return new Request(session)
         .setMethod('POST')
         .setBodyType('form')
         .setResource('startLiveBroadcast', {broadcast_id: broadcast_id})
+        .setData({
+            should_send_notifications : send_notifications
+        })
         .generateUUID()
         .signPayload()
         .send()
@@ -50,3 +53,17 @@ Live.startBroadcast = function(session, broadcast_id){
             return new Live(session, data);
         });
 };
+
+Live.getLikeCount = function(session, broadcast_id, timestamp = 0){
+    return new Request(session)
+    .setResource('getLiveBroadcastLikeCount', {broadcast_id: broadcast_id, like_ts: timestamp})
+    .setData({
+        like_ts: timestamp
+    })
+    .generateUUID()
+    .signPayload()
+    .send()
+    .then(function(data){
+        return data;
+    });
+}
