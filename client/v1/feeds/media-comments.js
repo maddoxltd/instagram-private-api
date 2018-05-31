@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var util = require('util');
 var FeedBase = require('./feed-base');
 var Exceptions = require('../exceptions');
@@ -14,6 +14,14 @@ module.exports = MediaCommentsFeed;
 var Request = require('../request');
 var Comment = require('../comment');
 
+
+MediaCommentsFeed.prototype.getCursor = function () {
+    if(typeof this.cursor === 'string'){
+      this.cursor = JSON.parse(this.cursor);
+    }
+
+    return this.cursor ? this.cursor.server_cursor : this.cursor;
+};
 
 MediaCommentsFeed.prototype.get = function () {
     var that = this;

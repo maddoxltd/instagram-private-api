@@ -1,4 +1,4 @@
-var _ = require("underscore");
+var _ = require("lodash");
 var util = require("util");
 var routes = require('./routes');
 
@@ -124,6 +124,8 @@ function CheckpointError(json, session) {
         this.url = json.checkpoint_url;
     if(!this.url && _.isObject(json.checkpoint) && _.isString(json.checkpoint.url))
         this.url = json.checkpoint.url;
+    if(!this.url && _.isObject(json.challenge) && _.isString(json.challenge.url))
+        this.url = json.challenge.url;
     if(!this.url)
         this.url = routes.getWebUrl('challenge')
     this.session = session;
@@ -344,7 +346,7 @@ exports.InvalidPhone = InvalidPhone;
 
 
 function InvalidPassword() {
-    this.name = 'InvalidPhone';
+    this.name = 'InvalidPassword';
     this.message = "Password must be at least 6 chars long";
 }
 
@@ -369,7 +371,7 @@ util.inherits(AccountRegistrationError, APIError);
 exports.AccountRegistrationError = AccountRegistrationError;
 
 function TranscodeTimeoutError() {
-    this.name = "Transcode Error";
+    this.name = "TranscodeError";
     this.message = "Server did not transcoded uploaded video in time";
 }
 util.inherits(TranscodeTimeoutError, APIError);

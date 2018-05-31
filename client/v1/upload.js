@@ -1,9 +1,9 @@
 var util = require("util");
-var _ = require("underscore");
+var _ = require("lodash");
 var Resource = require("./resource");
-const CONSTANTS = require("./constants");
 var Helpers = require('../../helpers');
 var Promise = require("bluebird");
+var camelKeys = require('camelcase-keys');
 
 function Upload() {
     Resource.apply(this, arguments);
@@ -17,19 +17,18 @@ var Exceptions = require('./exceptions');
 var Request = require("./request");
 
 
-Upload.prototype.parseParams = function (params) {
-    var hash = {};
-    hash.uploadId = params.upload_id;
-    if(params.video_upload_urls && params.video_upload_urls.length){
-        hash.uploadUrl = params.video_upload_urls[0].url;
-        hash.uploadJob = params.video_upload_urls[0].job;
+Upload.prototype.parseParams = function (json) {
+    var hash = camelKeys(json);
+    if(json.video_upload_urls && json.video_upload_urls.length){
+        hash.uploadUrl = json.video_upload_urls[0].url;
+        hash.uploadJob = json.video_upload_urls[0].job;
     }
     return hash;
 };
 
 
-Upload.photo = function (session, streamOrPath, uploadId, name, isSidecar) {
-    var stream = Helpers.pathToStream(streamOrPath);
+Upload.photo = function (session, streamOrPathOrBuffer, uploadId, name, isSidecar) {
+    var data = Buffer.isBuffer(streamOrPathOrBuffer) ? streamOrPathOrBuffer : Helpers.pathToStream(streamOrPathOrBuffer);
     // This compresion is just default one
     var compresion = {
         "lib_name": "jt",
@@ -59,7 +58,7 @@ Upload.photo = function (session, streamOrPath, uploadId, name, isSidecar) {
         .setData(fields)
         .transform(function(opts){
             opts.formData.photo = {
-                value: stream,
+                value: data,
                 options: {
                     filename: filename,
                     contentType: 'image/jpeg'
@@ -158,8 +157,8 @@ Upload.album = function (session, medias, caption, disableComments) {
                 throw new Error('Thumbnail not specified.');
             }
         }
-        var aspect_ratio = (media.size[0] * 1.0) / (media.size[1] * 1.0);
-        if(aspect_ratio > 1.0 || aspect_ratio < 1.0) {
+        var aspect_ratio = (media.size[0] / media.size[1]).toFixed(2);
+        if(aspect_ratio < 0.8 || aspect_ratio > 1.91) {
             throw new Error('Invalid media aspect ratio.');
         }
 
