@@ -201,3 +201,24 @@ Session.create = function(device, storage, username, password, proxy) {
             return Session.login(session, username, password)
         })
 }
+
+Session.prototype.twoFactor = function(two_factor_info, verification_method = '1', two_factor_code = ''){
+    let that = this;
+    return new Request(this)
+        .setMethod('POST')
+        .setBodyType('form')
+        .setResource('twoFactorLogin')
+        .setData({
+            verification_method: verification_method,
+            verification_code: two_factor_code,
+            two_factor_identifier: two_factor_info.two_factor_identifier,
+            username: that.device.username,
+            device_id: that.device.id
+        })
+        .generateUUID()
+        .signPayload()
+        .send()
+        .then(function(data){
+            return that;
+        });
+};

@@ -82,7 +82,8 @@ const ROUTES = {
     createLiveBroadcast: 'live/create/',
     startLiveBroadcast: 'live/<%= broadcast_id %>/start/',
     endLiveBroadcast: 'live/<%= broadcast_id %>/end_broadcast/',
-    disableLiveComments: 'live/<%= broadcast_id %>/mute_comment/'
+    disableLiveComments: 'live/<%= broadcast_id %>/mute_comment/',
+    twoFactorLogin: 'accounts/two_factor_login/'
 };
 
 
@@ -93,9 +94,9 @@ const WEB_ROUTES = {
 }
 
 const PRIVATE_KEY = {
-    SIG_KEY: '109513c04303341a7daf27bb41b268e633b30dcc65a3fe14503f743176113869',
-    SIG_VERSION: '4',
-    APP_VERSION: '27.0.0.7.97'
+    SIG_KEY: 'ac5f26ee05af3e40a81b94b78d762dc8287bcdd8254fe86d0971b2aded8884a4',
+    SIG_VERSION: '125398467',
+    APP_VERSION: '64.0.0.14.96'
 }
 
 
