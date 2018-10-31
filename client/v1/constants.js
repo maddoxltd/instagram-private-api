@@ -80,7 +80,9 @@ const ROUTES = {
     userStory: 'feed/reels_media/',
     storyTray: 'feed/reels_tray/',
     createLiveBroadcast: 'live/create/',
-    startLiveBroadcast: 'live/<%= broadcast_id %>/start/'
+    startLiveBroadcast: 'live/<%= broadcast_id %>/start/',
+    endLiveBroadcast: 'live/<%= broadcast_id %>/end_broadcast/',
+    disableLiveComments: 'live/<%= broadcast_id %>/mute_comment/'
 };
 
 

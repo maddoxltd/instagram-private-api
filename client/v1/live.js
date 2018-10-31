@@ -54,6 +54,19 @@ Live.startBroadcast = function(session, broadcast_id, send_notifications = 1){
         });
 };
 
+Live.endBroadcast = function(session, broadcast_id){
+    return new Request(session)
+        .setMethod('POST')
+        .setBodyType('form')
+        .setResource('endLiveBroadcast', {broadcast_id: broadcast_id})
+        .generateUUID()
+        .signPayload()
+        .send()
+        .then(function(data){
+            return true;
+        })
+}
+
 Live.getLikeCount = function(session, broadcast_id, timestamp = 0){
     return new Request(session)
     .setResource('getLiveBroadcastLikeCount', {broadcast_id: broadcast_id, like_ts: timestamp})
@@ -66,4 +79,17 @@ Live.getLikeCount = function(session, broadcast_id, timestamp = 0){
     .then(function(data){
         return data;
     });
+}
+
+Live.disableComments = function(session, broadcast_id){
+    return new Request(session)
+        .setMethod('POST')
+        .setBodyType('form')
+        .setResource('disableLiveComments', {broadcast_id: broadcast_id})
+        .generateUUID()
+        .signPayload()
+        .send()
+        .then(function(data){
+            return data;
+        });
 }
